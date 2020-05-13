@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Lab1.Controllers
 {
@@ -16,6 +17,7 @@ namespace Lab1.Controllers
         private TestEntities ctx = new TestEntities();
 
         // GET: api/Countires
+        [ResponseType(typeof(List<Country>))]
         public IHttpActionResult GetCountries()
         {
             //List<CountryPOCO> countries = ctx.Countries.Select(c =>
@@ -39,6 +41,7 @@ namespace Lab1.Controllers
         }
 
         // GET: api/Countries/5
+        [ResponseType(typeof(Country))]
         public IHttpActionResult GetCountry(int id)
         {
             Country country = ctx.Countries.Find(id);
@@ -50,17 +53,9 @@ namespace Lab1.Controllers
             return Ok(country);
         }
 
-        // POST: api/Countries
-        public IHttpActionResult AddCountry(Country country)
-        {
-            ctx.Countries.Add(country);
-            ctx.SaveChanges();
-
-            return Created("", country);
-        }
-
-        // PATCH: api/Countries/5
-        public IHttpActionResult EditCountry(int id, Country country)
+        // PUT: api/Countries/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutCountry(int id, Country country)
         {
 
             if (id != country.Id)
@@ -83,7 +78,19 @@ namespace Lab1.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // POST: api/Countries
+        [ResponseType(typeof(Country))]
+        public IHttpActionResult PostCountry(Country country)
+        {
+            ctx.Countries.Add(country);
+            ctx.SaveChanges();
+
+            return Created("", country);
+        }
+
+
         // DELETE: api/Countries/5
+        [ResponseType(typeof(Country))]
         public IHttpActionResult DeleteCountry(int id)
         {
             Country country = ctx.Countries.Find(id);
